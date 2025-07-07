@@ -18,6 +18,7 @@ export type Highlight = {
   note?: string;
   color?: 'pink' | 'blue' | 'yellow' | 'orange';
   createdDate?: Date;
+  isHeading?: boolean;
 };
 
 export type BookHighlight = {

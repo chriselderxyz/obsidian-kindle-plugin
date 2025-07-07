@@ -43,12 +43,15 @@ export const diffLists = (
   remotes.forEach((r) => syncState.set(r.id, { highlight: r, exists: !diff.contains(r) }));
 
   return diff.map((remote): DiffResult => {
+    // Get the next full highlight that is already rendered (exists)
+    // Need this to see if it is renered as a heading or not as it affects the insert line
     const next = getNextNeighbour(syncState, remote.id);
     const nextRendered = renders.find((r) => r.highlightId === next?.id);
 
     return {
       remoteHighlight: remote,
-      nextRenderedHighlight: nextRendered,
+      nextHighlight: next,
+      nextRenderedHighlight: nextRendered
     };
   });
 };

@@ -121,7 +121,9 @@ function BlockReferenceExtension(): void {
     const buffer = sb(renderedTemplate);
 
     const blockRef = `${HighlightIdBlockRefPrefix}${context.ctx[highlightId]}`;
-    const blockRefSuffixLine = `${buffer.getLine(this.lineNumber + 1)} ${blockRef}`;
+
+    // Add a new line before the ^ref if the highlight is a heading, otherwise it looks terrible
+    const blockRefSuffixLine = `${buffer.getLine(this.lineNumber + 1)}${context.ctx.isHeading ? "\n" : " "}${blockRef}`;
 
     buffer.replace({ line: this.lineNumber, content: blockRefSuffixLine });
     return new nunjucks.runtime.SafeString(buffer.toString());

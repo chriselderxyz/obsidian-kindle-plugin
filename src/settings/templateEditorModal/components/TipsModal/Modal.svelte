@@ -108,6 +108,10 @@
           <td><Chip title={'appLink'} /></td>
           <td>Link to highlighted text in Kindle app</td>
         </tr>
+        <tr>
+          <td><Chip title={'isHeading'} /></td>
+          <td>True if the .h# action tag syntax was used to render the highlight text as a markdown heading</td>
+        </tr>
       </tbody>
     </table>
   {/if}

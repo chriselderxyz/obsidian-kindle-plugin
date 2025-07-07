@@ -36,6 +36,8 @@ You can extract your `My Clippings.txt` file by plugging it into your computer u
 
 - **Powerful, flexible templating with preview** — Customise your highlights and file names to your liking by configuring your own template using ([Nunjucks][2]) templating language with live preview
 
+- **Use "action tags" to render headings** — Make the highlighted text render as a markdown heading by adding a note to the highlight with the syntax `.h#` - with `#` being the heading level up to 6. This is similar to the functionality provided by [Readwise Action Tags](https://docs.readwise.io/reader/docs/faqs/action-tags).
+
 ## Mission statement
 
 Inspired by Obsidian's principle of "your data sitting in a local folder" and "never leaving

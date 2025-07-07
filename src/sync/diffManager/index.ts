@@ -16,6 +16,7 @@ export type RenderedHighlight = {
 
 export type DiffResult = {
   remoteHighlight: Highlight;
+  nextHighlight: Highlight;
   nextRenderedHighlight?: RenderedHighlight;
 };
 
@@ -68,7 +69,9 @@ export class DiffManager {
     const insertList = diffs
       .filter((d) => d.nextRenderedHighlight)
       .map((d) => ({
-        line: d.nextRenderedHighlight?.line,
+        // If the user marked the highligh as a Heading the ^ref is on the following line
+        // So we have to subtract 1 from the ref line to find the place to insert new highlights
+        line: d.nextRenderedHighlight?.line - (d.nextHighlight.isHeading ? 1 : 0),
         content: highlightRenderer.render(d.remoteHighlight, this.kindleFile.book),
       }));
 

@@ -38,14 +38,55 @@ const parseHighlights = ($: Root): Highlight[] => {
     const highlightClasses = $('.kp-notebook-highlight', highlightEl).attr('class');
     const color = mapTextToColor(highlightClasses);
 
-    const text = $('#highlight', highlightEl).text()?.trim();
+    let text = $('#highlight', highlightEl).text()?.trim();
+    let note = br2ln($('#note', highlightEl).html());
+    let isHeading = false;
+    
+    if(note) {
+      // If the note is in the Action Tag heading syntax
+      // Render the highlighted 'text' as a heading
+      // Remove the note
+      switch (note.toLowerCase()) {
+        case ".h1":
+          text = `# ${text}`;
+          note = null;
+          isHeading = true;
+          break;
+        case ".h2":
+          text = `## ${text}`;
+          note = null;
+          isHeading = true;
+          break;
+        case ".h3":
+          text = `### ${text}`;
+          note = null;
+          isHeading = true;
+          break;
+        case ".h4":
+          text = `#### ${text}`;
+          note = null;
+          isHeading = true;
+          break;
+        case ".h5":
+          text = `##### ${text}`;
+          note = null;
+          break;
+        case ".h6":
+          text = `###### ${text}`;
+          note = null;
+          isHeading = true;
+          break;
+      }
+    }
+
     return {
       id: hash(text),
       text,
       color,
       location: $('#kp-annotation-location', highlightEl).val(),
       page: pageMatch ? pageMatch[0] : null,
-      note: br2ln($('#note', highlightEl).html()),
+      note,
+      isHeading,
     };
   });
 };

@@ -37,6 +37,7 @@ describe('HighlightRenderer', () => {
         page: '3',
         note: 'my smart note',
         color: 'pink',
+        isHeading: false
       };
 
       it.each([

@@ -1,5 +1,6 @@
-{{ text }} — location: [{{ location }}]({{ appLink }})
-
-{% if note %}{{note}}{% endif %}
+{{ text }}
+{%- if not isHeading %} - location: [{{ location }}]({{ appLink }}){% endif %} 
+{% if isHeading %}location: [{{ location }}]({{ appLink }}){% endif %}
+{%if note %}{{note}}{% endif %}
 
 ---
