@@ -2,7 +2,7 @@ import type { Root } from 'cheerio';
 
 import { currentAmazonRegion } from '~/amazonRegion';
 import type { Book, Highlight } from '~/models';
-import { br2ln, hash } from '~/utils';
+import { applyActionTags, br2ln, hash } from '~/utils';
 
 import { loadRemoteDom } from './loadRemoteDom';
 
@@ -38,56 +38,17 @@ const parseHighlights = ($: Root): Highlight[] => {
     const highlightClasses = $('.kp-notebook-highlight', highlightEl).attr('class');
     const color = mapTextToColor(highlightClasses);
 
-    let text = $('#highlight', highlightEl).text()?.trim();
-    let note = br2ln($('#note', highlightEl).html());
-    let isHeading = false;
-    
-    if(note) {
-      // If the note is in the Action Tag heading syntax
-      // Render the highlighted 'text' as a heading
-      // Remove the note
-      switch (note.toLowerCase()) {
-        case ".h1":
-          text = `# ${text}`;
-          note = null;
-          isHeading = true;
-          break;
-        case ".h2":
-          text = `## ${text}`;
-          note = null;
-          isHeading = true;
-          break;
-        case ".h3":
-          text = `### ${text}`;
-          note = null;
-          isHeading = true;
-          break;
-        case ".h4":
-          text = `#### ${text}`;
-          note = null;
-          isHeading = true;
-          break;
-        case ".h5":
-          text = `##### ${text}`;
-          note = null;
-          break;
-        case ".h6":
-          text = `###### ${text}`;
-          note = null;
-          isHeading = true;
-          break;
-      }
-    }
+    const text = $('#highlight', highlightEl).text()?.trim();
 
-    return {
+    return applyActionTags({
       id: hash(text),
       text,
       color,
       location: $('#kp-annotation-location', highlightEl).val(),
       page: pageMatch ? pageMatch[0] : null,
-      note,
-      isHeading,
-    };
+      note: br2ln($('#note', highlightEl).html()),
+      isHeading: false,
+    });
   });
 };
 

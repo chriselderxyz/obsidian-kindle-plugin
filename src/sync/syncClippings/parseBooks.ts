@@ -2,7 +2,7 @@ import { Book, groupToBooks, readMyClippingsFile } from '@hadynz/kindle-clipping
 import fs from 'fs';
 
 import type { BookHighlight, Highlight } from '~/models';
-import { hash } from '~/utils';
+import { applyActionTags, hash } from '~/utils';
 
 const toBookHighlight = (book: Book): BookHighlight => {
   return {
@@ -13,16 +13,17 @@ const toBookHighlight = (book: Book): BookHighlight => {
     },
     highlights: book.annotations
       .filter((entry) => entry.type === 'HIGHLIGHT' || entry.type === 'UNKNOWN')
-      .map(
-        (entry): Highlight => ({
+      .map((entry): Highlight => {
+        return applyActionTags({
           id: hash(entry.content),
           text: entry.content,
           note: entry.note,
           location: entry.location?.display,
           page: entry.page?.display,
           createdDate: entry.createdDate,
-        })
-      ),
+          isHeading: false,
+        });
+      }),
   };
 };
 
