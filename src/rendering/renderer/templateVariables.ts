@@ -47,6 +47,7 @@ type HighlightTemplateVariables = CommonTemplateVariables & {
   color?: 'pink' | 'blue' | 'yellow' | 'orange';
   createdDate?: Date;
   appLink?: string;
+  isHeading?: boolean;
 };
 
 export const authorsTemplateVariables = (author: string): AuthorsTemplateVariables => {

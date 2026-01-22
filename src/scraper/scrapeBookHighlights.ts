@@ -2,7 +2,7 @@ import type { Root } from 'cheerio';
 
 import { currentAmazonRegion } from '~/amazonRegion';
 import type { Book, Highlight } from '~/models';
-import { br2ln, hash } from '~/utils';
+import { applyActionTags, br2ln, hash } from '~/utils';
 
 import { loadRemoteDom } from './loadRemoteDom';
 
@@ -39,14 +39,16 @@ const parseHighlights = ($: Root): Highlight[] => {
     const color = mapTextToColor(highlightClasses);
 
     const text = $('#highlight', highlightEl).text()?.trim();
-    return {
+
+    return applyActionTags({
       id: hash(text),
       text,
       color,
       location: $('#kp-annotation-location', highlightEl).val(),
       page: pageMatch ? pageMatch[0] : null,
       note: br2ln($('#note', highlightEl).html()),
-    };
+      isHeading: false,
+    });
   });
 };
 
